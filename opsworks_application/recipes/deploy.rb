@@ -1,4 +1,5 @@
 include_recipe 'aws'
+include_recipe 's3_file'
 
 node[:deploy].each do |app_name, deploy_config|
   template "#{deploy_config[:deploy_to]}/current/config/application.yml" do
