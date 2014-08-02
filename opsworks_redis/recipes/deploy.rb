@@ -1,7 +1,5 @@
 node[:deploy].each do |appname, deploy_config|
-  approot = "#{deploy_config[:deploy_to]}/current"
-
-  template "#{approot}/config/redis.yml" do
+  template "#{deploy_config[:deploy_to]}/current/config/redis.yml" do
     source "redis.yml.erb"
     cookbook "opsworks_redis"
 
