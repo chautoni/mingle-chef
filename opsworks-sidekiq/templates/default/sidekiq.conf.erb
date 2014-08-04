@@ -19,22 +19,16 @@ stop on (stopping workers or runlevel [06])
 
 # change to match your deployment user
 setuid deploy
-setgid deploy
+setgid www-data
 
 respawn
 respawn limit 3 30
 
-# TERM is sent by sidekiqctl when stopping sidekiq.  Without declaring these as normal exit codes, it just respawns.
-normal exit 0 TERM
+# TERM and USR1 are sent by sidekiqctl when stopping sidekiq.  Without declaring these as normal exit codes, it just respawns.
+normal exit 0 TERM USR1
+
+chdir "<%= @release_path %>"
 
 script
-exec /bin/bash <<EOT
-  exec "cd #{@release_path} ; nohup bundle exec sidekiq -e #{@sidekiq_env} -C #{@release_path}/config/sidekiq.yml -P #{@release_path}/tmp/pids/sidekiq.pid >> /dev/null 2>&1 &"
-EOT
-end script
-
-pre-stop script
-exec /bin/bash <<EOT
-  exec "cd #{@release_path} && if [ -f #{@release_path}/tmp/pids/sidekiq.pid ]; then bundle exec sidekiqctl stop #{@release_path}/tmp/pids/sidekiq.pid 60 ; fi"
-EOT
+  exec bundle exec sidekiq -e <%= @sidekiq_env %> -C config/sidekiq.yml
 end script
