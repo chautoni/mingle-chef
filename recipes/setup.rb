@@ -10,7 +10,7 @@ node[:deploy].each do |app_name, deploy_config|
     recursive true
   end
 
-  ['apple_push_notification.pem', 'application.yml', 'redis.yml', 'pusher.yml'].each do |file_name|
+  ['apple_push_notification.pem', 'application.yml', 'redis.yml', 'pusher.yml', 'remote_syslog.yml'].each do |file_name|
     aws_s3_file "#{app_config_path}/#{file_name}" do
       bucket node[:mingle][:s3_configuration_bucket]
       remote_path file_name
