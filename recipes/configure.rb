@@ -5,7 +5,7 @@ node[:deploy].each do |app_name, deploy_config|
   aws_secret_access_key = deploy_config[:application_variables][:aws_secret_access_key]
   app_config_path = "#{deploy_config[:deploy_to]}/shared/config"
 
-  ['apple_push_notification.pem', 'application.yml', 'redis.yml', 'pusher.yml', 'remote_syslog.yml'].each do |file_name|
+  ['apple_push_notification.pem', 'apple_push_notification_development.pem', 'application.yml', 'redis.yml', 'pusher.yml', 'remote_syslog.yml'].each do |file_name|
     aws_s3_file "#{app_config_path}/#{file_name}" do
       bucket node[:mingle][:s3_configuration_bucket]
       remote_path file_name
