@@ -1,0 +1,5 @@
+name             "passenger_apache2"
+description      "Installs passenger for Apache2"
+maintainer       "AWS OpsWorks"
+license          "Apache 2.0"
+version          "1.0.0"
